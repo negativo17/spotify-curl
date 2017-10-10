@@ -6,6 +6,7 @@ Version:    7.53.1
 Release:    1%{?dist}
 Summary:    A utility for getting files from remote servers (FTP, HTTP, and others)
 License:    MIT
+URL:        https://curl.haxx.se
 
 Source:     https://curl.haxx.se/download/curl-%{version}.tar.lzma
 
