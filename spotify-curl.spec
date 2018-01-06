@@ -1,9 +1,11 @@
 # Running tests requires ~20 minutes
 %global with_tests 0
 
+%global         __provides_exclude ^(lib.*\\.so.*)$
+
 Name:       spotify-curl
 Version:    7.53.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    A utility for getting files from remote servers (FTP, HTTP, and others)
 License:    MIT
 URL:        https://curl.haxx.se
@@ -171,6 +173,9 @@ mv %{buildroot}%{_libdir}/*.so.* %{buildroot}%{_libdir}/spotify-client/
 %{_libdir}/spotify-client/*.so.*
 
 %changelog
+* Sat Jan 06 2018 Simone Caronni <negativo17@gmail.com> - 7.53.1-2
+- Do not provide libcurl.so.4.
+
 * Tue Oct 10 2017 Simone Caronni <negativo17@gmail.com> - 7.53.1-1
 - First build based off Fedora package.
 
