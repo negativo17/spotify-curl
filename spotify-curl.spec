@@ -1,41 +1,26 @@
 # Running tests requires ~20 minutes
 %global with_tests 0
 
-%global __provides_exclude ^(lib.*\\.so.*)$
+#global __provides_exclude ^(lib.*\\.so.*)$
 
 Name:       spotify-curl
-Version:    7.53.1
-Release:    2%{?dist}
+Version:    7.58.0
+Release:    1%{?dist}
 Summary:    A utility for getting files from remote servers (FTP, HTTP, and others)
 License:    MIT
 URL:        https://curl.haxx.se
 
-Source:     https://curl.haxx.se/download/curl-%{version}.tar.lzma
+Source:     https://curl.haxx.se/download/curl-%{version}.tar.xz
 
-# fix out of bounds read in curl --write-out (CVE-2017-7407)
-Patch1:     0001-curl-7.53.1-CVE-2017-7407.patch
-# fix switching off SSL session id when client cert is used (CVE-2017-7468)
-Patch2:     0002-curl-7.53.1-CVE-2017-7468.patch
-# nss: do not leak PKCS #11 slot while loading a key (#1444860)
-Patch3:     0003-curl-7.53.1-nss-pem-slot-leak.patch
-# nss: use libnssckbi.so as the default source of trust
-Patch4:     0004-curl-7.53.1-libnssckbi.patch
-# fix out of bounds read in FTP PWD response parser (CVE-2017-1000254)
-Patch5:     0005-curl-7.53.1-CVE-2017-1000254.patch
-# nss: fix a possible use-after-free in SelectClientCert() (#1436158)
-Patch7:     0007-curl-7.54.1-nss-cc-use-after-free.patch
-# ignore Content-Length/Transfer-Encoding headers in CONNECT response (#1476427)
-Patch8:     0008-curl-7.53.1-connect-response-headers.patch
-# do not continue parsing of glob after range overflow (CVE-2017-1000101)
-Patch9:     0009-curl-7.54.1-CVE-2017-1000101.patch
-# tftp: reject file name lengths that do not fit buffer (CVE-2017-1000100)
-Patch10:    0010-curl-7.54.1-CVE-2017-1000100.patch
-# patch making libcurl multilib ready
-Patch101:   0101-curl-7.32.0-multilib.patch
-# prevent configure script from discarding -g in CFLAGS (#496778)
-Patch102:   0102-curl-7.36.0-debug.patch
-# use localhost6 instead of ip6-localhost in the curl test-suite
-Patch104:   0104-curl-7.19.7-localhost6.patch
+Patch1:     04_workaround_as_needed_bug.patch
+Patch2:     06_always-disable-valgrind.patch
+Patch3:     07_do-not-disable-debug-symbols.patch
+Patch4:     08_enable-zsh.patch
+Patch5:     11_omit-directories-from-config.patch
+Patch6:     CVE-2018-1000120.patch
+Patch7:     CVE-2018-1000121.patch
+Patch8:     CVE-2018-1000122.patch
+Patch9:     90_gnutls.patch
 
 BuildRequires:  automake
 BuildRequires:  groff
@@ -47,11 +32,10 @@ BuildRequires:  libpsl-devel
 BuildRequires:  libssh2-devel
 BuildRequires:  libtool
 BuildRequires:  multilib-rpm-config
-BuildRequires:  nss-devel
 BuildRequires:  openldap-devel
 BuildRequires:  openssh-clients
 BuildRequires:  openssh-server
-BuildRequires:  pkgconfig
+BuildRequires:  pkgconfig(gnutls)
 BuildRequires:  python
 BuildRequires:  stunnel
 BuildRequires:  zlib-devel
@@ -118,6 +102,8 @@ autoreconf -vif
     --enable-ldaps \
     --enable-manual \
     --enable-threaded-resolver \
+    --enable-versioned-symbols \
+    --with-gnutls \
     --with-gssapi${KRB5_PREFIX} \
     --with-libidn2 \
     --with-libmetalink \
@@ -125,13 +111,8 @@ autoreconf -vif
     --with-libssh2 \
     --with-nghttp2 \
     --without-ssl \
-    --with-nss \
+    --without-nss \
     --without-ca-bundle
-
-# Remove bogus rpath
-#sed -i \
-#    -e 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' \
-#    -e 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
 make %{?_smp_mflags} V=1
 
@@ -173,6 +154,10 @@ mv %{buildroot}%{_libdir}/*.so.* %{buildroot}%{_libdir}/spotify-client/
 %{_libdir}/spotify-client/*.so.*
 
 %changelog
+* Mon Apr 23 2018 Simone Caronni <negativo17@gmail.com> - 7.58.0-1
+- Update to 7.58.0.
+- Use Ubuntu patches, provide specific GNUTLS build.
+
 * Sat Jan 06 2018 Simone Caronni <negativo17@gmail.com> - 7.53.1-2
 - Do not provide libcurl.so.4.
 
