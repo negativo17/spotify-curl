@@ -1,7 +1,7 @@
 # Running tests requires ~20 minutes
 %global with_tests 0
 
-%global         __provides_exclude ^(lib.*\\.so.*)$
+%global __provides_exclude ^(lib.*\\.so.*)$
 
 Name:       spotify-curl
 Version:    7.53.1
