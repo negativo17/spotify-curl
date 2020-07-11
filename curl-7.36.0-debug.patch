@@ -1,0 +1,61 @@
+From 3602ee9dcc74683f91fe4f9ca228aa17a6474403 Mon Sep 17 00:00:00 2001
+From: Kamil Dudka <kdudka@redhat.com>
+Date: Wed, 31 Oct 2012 11:38:30 +0100
+Subject: [PATCH] prevent configure script from discarding -g in CFLAGS
+ (#496778)
+
+---
+ m4/curl-compilers.m4 | 26 ++++++--------------------
+ 1 file changed, 6 insertions(+), 20 deletions(-)
+
+diff --git a/m4/curl-compilers.m4 b/m4/curl-compilers.m4
+index c64db4bc6..d115a4aed 100644
+--- a/m4/curl-compilers.m4
++++ b/m4/curl-compilers.m4
+@@ -106,18 +106,11 @@ AC_DEFUN([CURL_CHECK_COMPILER_CLANG], [
+     clangvhi=`echo $clangver | cut -d . -f1`
+     clangvlo=`echo $clangver | cut -d . -f2`
+     compiler_num=`(expr $clangvhi "*" 100 + $clangvlo) 2>/dev/null`
+-    flags_dbg_all="-g -g0 -g1 -g2 -g3"
+-    flags_dbg_all="$flags_dbg_all -ggdb"
+-    flags_dbg_all="$flags_dbg_all -gstabs"
+-    flags_dbg_all="$flags_dbg_all -gstabs+"
+-    flags_dbg_all="$flags_dbg_all -gcoff"
+-    flags_dbg_all="$flags_dbg_all -gxcoff"
+-    flags_dbg_all="$flags_dbg_all -gdwarf-2"
+-    flags_dbg_all="$flags_dbg_all -gvms"
++    flags_dbg_all=""
+     flags_dbg_yes="-g"
+     flags_dbg_off=""
+-    flags_opt_all="-O -O0 -O1 -O2 -Os -O3 -O4"
+-    flags_opt_yes="-Os"
++    flags_opt_all=""
++    flags_opt_yes=""
+     flags_opt_off="-O0"
+   else
+     AC_MSG_RESULT([no])
+@@ -175,18 +168,11 @@ AC_DEFUN([CURL_CHECK_COMPILER_GNU_C], [
+     gccvhi=`echo $gccver | cut -d . -f1`
+     gccvlo=`echo $gccver | cut -d . -f2`
+     compiler_num=`(expr $gccvhi "*" 100 + $gccvlo) 2>/dev/null`
+-    flags_dbg_all="-g -g0 -g1 -g2 -g3"
+-    flags_dbg_all="$flags_dbg_all -ggdb"
+-    flags_dbg_all="$flags_dbg_all -gstabs"
+-    flags_dbg_all="$flags_dbg_all -gstabs+"
+-    flags_dbg_all="$flags_dbg_all -gcoff"
+-    flags_dbg_all="$flags_dbg_all -gxcoff"
+-    flags_dbg_all="$flags_dbg_all -gdwarf-2"
+-    flags_dbg_all="$flags_dbg_all -gvms"
++    flags_dbg_all=""
+     flags_dbg_yes="-g"
+     flags_dbg_off=""
+-    flags_opt_all="-O -O0 -O1 -O2 -O3 -Os -Og -Ofast"
+-    flags_opt_yes="-O2"
++    flags_opt_all=""
++    flags_opt_yes=""
+     flags_opt_off="-O0"
+     CURL_CHECK_DEF([_WIN32], [], [silent])
+   else
+-- 
+1.7.1
+
