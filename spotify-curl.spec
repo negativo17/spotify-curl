@@ -1,7 +1,7 @@
 %global __provides_exclude ^(lib.*\\.so.*)$
 
 Name:       spotify-curl
-Version:    7.71.1
+Version:    7.76.0
 Release:    1%{?dist}
 Summary:    Spotify compatibility package - Curl
 License:    MIT
@@ -71,6 +71,9 @@ mv %{buildroot}%{_libdir}/*.so.* %{buildroot}%{_libdir}/spotify-client/
 %{_libdir}/spotify-client/libcurl-gnutls.so.*
 
 %changelog
+* Fri Apr 09 2021 Simone Caronni <negativo17@gmail.com> - 7.76.0-1
+- Update to 7.76.0.
+
 * Sat Jul 11 2020 Simone Caronni <negativo17@gmail.com> - 7.71.1-1
 - Update to 7.71.1.
 - Simplify SPEC file massively.
