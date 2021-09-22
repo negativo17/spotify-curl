@@ -1,6 +1,6 @@
-diff -Naur curl-7.71.1.old/docs/examples/Makefile.am curl-7.71.1/docs/examples/Makefile.am
---- curl-7.71.1.old/docs/examples/Makefile.am	2020-07-11 09:23:35.061385982 +0200
-+++ curl-7.71.1/docs/examples/Makefile.am	2020-07-11 09:23:58.566917278 +0200
+diff -Naur curl-7.79.1.old/docs/examples/Makefile.am curl-7.79.1/docs/examples/Makefile.am
+--- curl-7.79.1.old/docs/examples/Makefile.am	2021-09-22 14:26:19.428481455 +0200
++++ curl-7.79.1/docs/examples/Makefile.am	2021-09-22 14:26:37.193793730 +0200
 @@ -48,9 +48,9 @@
  
  # Dependencies
@@ -13,9 +13,9 @@ diff -Naur curl-7.71.1.old/docs/examples/Makefile.am curl-7.71.1/docs/examples/M
  endif
  
  # This might hold -Werror
-diff -Naur curl-7.71.1.old/lib/libcurl.vers.in curl-7.71.1/lib/libcurl.vers.in
---- curl-7.71.1.old/lib/libcurl.vers.in	2020-07-11 09:23:35.065386073 +0200
-+++ curl-7.71.1/lib/libcurl.vers.in	2020-07-11 09:31:02.737504843 +0200
+diff -Naur curl-7.79.1.old/lib/libcurl.vers.in curl-7.79.1/lib/libcurl.vers.in
+--- curl-7.79.1.old/lib/libcurl.vers.in	2021-09-22 14:26:19.433481543 +0200
++++ curl-7.79.1/lib/libcurl.vers.in	2021-09-22 14:26:37.252794767 +0200
 @@ -6,7 +6,7 @@
      _save*;
  };
@@ -25,12 +25,12 @@ diff -Naur curl-7.71.1.old/lib/libcurl.vers.in curl-7.71.1/lib/libcurl.vers.in
  {
    global: curl_*;
    local: *;
-diff -Naur curl-7.71.1.old/lib/Makefile.am curl-7.71.1/lib/Makefile.am
---- curl-7.71.1.old/lib/Makefile.am	2020-07-11 09:23:35.072386231 +0200
-+++ curl-7.71.1/lib/Makefile.am	2020-07-11 09:25:24.256854131 +0200
+diff -Naur curl-7.79.1.old/lib/Makefile.am curl-7.79.1/lib/Makefile.am
+--- curl-7.79.1.old/lib/Makefile.am	2021-09-22 14:26:19.444481736 +0200
++++ curl-7.79.1/lib/Makefile.am	2021-09-22 14:26:37.252794767 +0200
 @@ -32,7 +32,7 @@
   firefox-db2pem.sh config-vxworks.h Makefile.vxworks checksrc.pl    \
-  setup-win32.h
+  setup-win32.h .checksrc
  
 -lib_LTLIBRARIES = libcurl.la
 +lib_LTLIBRARIES = libcurl-gnutls.la
@@ -104,24 +104,24 @@ diff -Naur curl-7.71.1.old/lib/Makefile.am curl-7.71.1/lib/Makefile.am
  libcurlu_la_SOURCES = $(CSOURCES) $(HHEADERS)
  
  CHECKSRC = $(CS_$(V))
-diff -Naur curl-7.71.1.old/src/Makefile.am curl-7.71.1/src/Makefile.am
---- curl-7.71.1.old/src/Makefile.am	2020-07-11 09:23:35.077386344 +0200
-+++ curl-7.71.1/src/Makefile.am	2020-07-11 09:23:58.569917346 +0200
+diff -Naur curl-7.79.1.old/src/Makefile.am curl-7.79.1/src/Makefile.am
+--- curl-7.79.1.old/src/Makefile.am	2021-09-22 14:26:19.452481877 +0200
++++ curl-7.79.1/src/Makefile.am	2021-09-22 14:27:23.398605908 +0200
 @@ -61,9 +61,9 @@
  LIBS = $(BLANK_AT_MAKETIME)
  
  if USE_EXPLICIT_LIB_DEPS
--curl_LDADD = $(top_builddir)/lib/libcurl.la @LIBMETALINK_LIBS@ @LIBCURL_LIBS@
-+curl_LDADD = $(top_builddir)/lib/libcurl-gnutls.la @LIBMETALINK_LIBS@ @LIBCURL_LIBS@
+-curl_LDADD = $(top_builddir)/lib/libcurl.la @LIBCURL_LIBS@
++curl_LDADD = $(top_builddir)/lib/libcurl-gnutls.la @LIBCURL_LIBS@
  else
--curl_LDADD = $(top_builddir)/lib/libcurl.la @LIBMETALINK_LIBS@ @NSS_LIBS@ @SSL_LIBS@ @ZLIB_LIBS@ @CURL_NETWORK_AND_TIME_LIBS@
-+curl_LDADD = $(top_builddir)/lib/libcurl-gnutls.la @LIBMETALINK_LIBS@ @NSS_LIBS@ @SSL_LIBS@ @ZLIB_LIBS@ @CURL_NETWORK_AND_TIME_LIBS@
+-curl_LDADD = $(top_builddir)/lib/libcurl.la @NSS_LIBS@ @SSL_LIBS@ @ZLIB_LIBS@ @CURL_NETWORK_AND_TIME_LIBS@
++curl_LDADD = $(top_builddir)/lib/libcurl-gnutls.la @NSS_LIBS@ @SSL_LIBS@ @ZLIB_LIBS@ @CURL_NETWORK_AND_TIME_LIBS@
  endif
  
- curl_LDFLAGS = @LIBMETALINK_LDFLAGS@
-diff -Naur curl-7.71.1.old/tests/libtest/Makefile.am curl-7.71.1/tests/libtest/Makefile.am
---- curl-7.71.1.old/tests/libtest/Makefile.am	2020-07-11 09:23:35.123387382 +0200
-+++ curl-7.71.1/tests/libtest/Makefile.am	2020-07-11 09:23:58.610918274 +0200
+ # if unit tests are enabled, build a static library to link them with
+diff -Naur curl-7.79.1.old/tests/libtest/Makefile.am curl-7.79.1/tests/libtest/Makefile.am
+--- curl-7.79.1.old/tests/libtest/Makefile.am	2021-09-22 14:26:19.463482070 +0200
++++ curl-7.79.1/tests/libtest/Makefile.am	2021-09-22 14:26:37.253794785 +0200
 @@ -57,11 +57,11 @@
  LIBS = $(BLANK_AT_MAKETIME)
  

@@ -1,0 +1,25 @@
+diff -Naur curl-7.79.1.old/m4/curl-compilers.m4 curl-7.79.1/m4/curl-compilers.m4
+--- curl-7.79.1.old/m4/curl-compilers.m4	2021-09-22 14:26:19.447481789 +0200
++++ curl-7.79.1/m4/curl-compilers.m4	2021-09-22 14:30:56.203346994 +0200
+@@ -105,8 +105,8 @@
+     clangvlo=`echo $clangver | cut -d . -f2`
+     compiler_num=`(expr $clangvhi "*" 100 + $clangvlo) 2>/dev/null`
+     flags_dbg_yes="-g"
+-    flags_opt_all="-O -O0 -O1 -O2 -Os -O3 -O4"
+-    flags_opt_yes="-Os"
++    flags_opt_all=""
++    flags_opt_yes=""
+     flags_opt_off="-O0"
+   else
+     AC_MSG_RESULT([no])
+@@ -163,8 +163,8 @@
+     gccvlo=`echo $gccver | cut -d . -f2`
+     compiler_num=`(expr $gccvhi "*" 100 + $gccvlo) 2>/dev/null`
+     flags_dbg_yes="-g"
+-    flags_opt_all="-O -O0 -O1 -O2 -O3 -Os -Og -Ofast"
+-    flags_opt_yes="-O2"
++    flags_opt_all=""
++    flags_opt_yes=""
+     flags_opt_off="-O0"
+     CURL_CHECK_DEF([_WIN32], [], [silent])
+   else
