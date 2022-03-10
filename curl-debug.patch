@@ -1,7 +1,7 @@
-diff -Naur curl-7.79.1.old/m4/curl-compilers.m4 curl-7.79.1/m4/curl-compilers.m4
---- curl-7.79.1.old/m4/curl-compilers.m4	2021-09-22 14:26:19.447481789 +0200
-+++ curl-7.79.1/m4/curl-compilers.m4	2021-09-22 14:30:56.203346994 +0200
-@@ -105,8 +105,8 @@
+diff -Naur curl-7.82.0.old/m4/curl-compilers.m4 curl-7.82.0/m4/curl-compilers.m4
+--- curl-7.82.0.old/m4/curl-compilers.m4	2022-03-01 18:06:54.000000000 +0100
++++ curl-7.82.0/m4/curl-compilers.m4	2022-03-10 14:29:55.670145786 +0100
+@@ -104,8 +104,8 @@
      clangvlo=`echo $clangver | cut -d . -f2`
      compiler_num=`(expr $clangvhi "*" 100 + $clangvlo) 2>/dev/null`
      flags_dbg_yes="-g"
@@ -12,7 +12,7 @@ diff -Naur curl-7.79.1.old/m4/curl-compilers.m4 curl-7.79.1/m4/curl-compilers.m4
      flags_opt_off="-O0"
    else
      AC_MSG_RESULT([no])
-@@ -163,8 +163,8 @@
+@@ -162,8 +162,8 @@
      gccvlo=`echo $gccver | cut -d . -f2`
      compiler_num=`(expr $gccvhi "*" 100 + $gccvlo) 2>/dev/null`
      flags_dbg_yes="-g"
