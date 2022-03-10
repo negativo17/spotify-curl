@@ -1,7 +1,7 @@
 %global __provides_exclude ^(lib.*\\.so.*)$
 
 Name:       spotify-curl
-Version:    7.79.1
+Version:    7.82.0
 Release:    1%{?dist}
 Summary:    Spotify compatibility package - Curl
 License:    MIT
@@ -69,6 +69,9 @@ mv %{buildroot}%{_libdir}/*.so.* %{buildroot}%{_libdir}/spotify-client/
 %{_libdir}/spotify-client/libcurl-gnutls.so.*
 
 %changelog
+* Thu Mar 10 2022 Simone Caronni <negativo17@gmail.com> - 7.82.0-1
+- Update to 7.82.0.
+
 * Wed Sep 22 2021 Simone Caronni <negativo17@gmail.com> - 7.79.1-1
 - Update to 7.79.1, drop metalink.
 
