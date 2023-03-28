@@ -1,7 +1,7 @@
 %global __provides_exclude ^(lib.*\\.so.*)$
 
 Name:       spotify-curl
-Version:    7.82.0
+Version:    7.88.1
 Release:    1%{?dist}
 Summary:    Spotify compatibility package - Curl
 License:    MIT
@@ -10,7 +10,6 @@ URL:        https://curl.haxx.se
 Source:     https://curl.haxx.se/download/curl-%{version}.tar.xz
 
 Patch0:     curl-gnutls.patch
-Patch1:     curl-debug.patch
 
 BuildRequires:  automake
 BuildRequires:  groff
@@ -45,9 +44,7 @@ autoreconf -vif
     --with-libidn2 \
     --with-libpsl \
     --with-libssh2 \
-    --with-nghttp2 \
-    --without-ssl \
-    --without-nss
+    --with-nghttp2
 
 %make_build
 
@@ -66,9 +63,13 @@ mv %{buildroot}%{_libdir}/*.so.* %{buildroot}%{_libdir}/spotify-client/
 
 %files
 %license COPYING
-%{_libdir}/spotify-client/libcurl-gnutls.so.*
+%{_libdir}/spotify-client/libcurl-gnutls.so.4
+%{_libdir}/spotify-client/libcurl-gnutls.so.4.8.0
 
 %changelog
+* Tue Mar 28 2023 Simone Caronni <negativo17@gmail.com> - 7.88.1-1
+- Update to 7.88.1.
+
 * Thu Mar 10 2022 Simone Caronni <negativo17@gmail.com> - 7.82.0-1
 - Update to 7.82.0.
 

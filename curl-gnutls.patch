@@ -1,7 +1,7 @@
-diff -Naur curl-7.82.0.old/docs/examples/Makefile.am curl-7.82.0/docs/examples/Makefile.am
---- curl-7.82.0.old/docs/examples/Makefile.am	2022-03-01 18:06:54.000000000 +0100
-+++ curl-7.82.0/docs/examples/Makefile.am	2022-03-10 14:27:45.424882835 +0100
-@@ -48,9 +48,9 @@
+diff -Naur curl-7.88.1.old/docs/examples/Makefile.am curl-7.88.1/docs/examples/Makefile.am
+--- curl-7.88.1.old/docs/examples/Makefile.am	2023-03-28 08:29:54.319602262 +0200
++++ curl-7.88.1/docs/examples/Makefile.am	2023-03-28 08:30:26.478144604 +0200
+@@ -51,9 +51,9 @@
  
  # Dependencies
  if USE_EXPLICIT_LIB_DEPS
@@ -13,9 +13,9 @@ diff -Naur curl-7.82.0.old/docs/examples/Makefile.am curl-7.82.0/docs/examples/M
  endif
  
  # This might hold -Werror
-diff -Naur curl-7.82.0.old/lib/libcurl.vers.in curl-7.82.0/lib/libcurl.vers.in
---- curl-7.82.0.old/lib/libcurl.vers.in	2021-07-30 22:28:24.000000000 +0200
-+++ curl-7.82.0/lib/libcurl.vers.in	2022-03-10 14:27:45.578885457 +0100
+diff -Naur curl-7.88.1.old/lib/libcurl.vers.in curl-7.88.1/lib/libcurl.vers.in
+--- curl-7.88.1.old/lib/libcurl.vers.in	2023-03-28 08:29:54.323602329 +0200
++++ curl-7.88.1/lib/libcurl.vers.in	2023-03-28 08:30:26.479144621 +0200
 @@ -6,7 +6,7 @@
      _save*;
  };
@@ -25,21 +25,25 @@ diff -Naur curl-7.82.0.old/lib/libcurl.vers.in curl-7.82.0/lib/libcurl.vers.in
  {
    global: curl_*;
    local: *;
-diff -Naur curl-7.82.0.old/lib/Makefile.am curl-7.82.0/lib/Makefile.am
---- curl-7.82.0.old/lib/Makefile.am	2022-03-01 18:06:54.000000000 +0100
-+++ curl-7.82.0/lib/Makefile.am	2022-03-10 14:27:45.579885474 +0100
-@@ -29,7 +29,7 @@
-  config-os400.h setup-os400.h mk-ca-bundle.pl mk-ca-bundle.vbs \
-  $(CMAKE_DIST) firefox-db2pem.sh checksrc.pl setup-win32.h .checksrc
+diff -Naur curl-7.88.1.old/lib/Makefile.am curl-7.88.1/lib/Makefile.am
+--- curl-7.88.1.old/lib/Makefile.am	2023-03-28 08:29:54.332602481 +0200
++++ curl-7.88.1/lib/Makefile.am	2023-03-28 08:31:20.071048430 +0200
+@@ -31,7 +31,7 @@
+  config-os400.h setup-os400.h $(CMAKE_DIST) setup-win32.h .checksrc \
+  Makefile.soname
  
 -lib_LTLIBRARIES = libcurl.la
 +lib_LTLIBRARIES = libcurl-gnutls.la
  
  if BUILD_UNITTESTS
  noinst_LTLIBRARIES = libcurlu.la
-@@ -74,43 +74,43 @@
- AM_LDFLAGS =
- AM_CFLAGS =
+@@ -67,51 +67,51 @@
+ # Makefile.inc provides the CSOURCES and HHEADERS defines
+ include Makefile.inc
+ 
+-libcurl_la_SOURCES = $(CSOURCES) $(HHEADERS)
++libcurl_gnutls_la_SOURCES = $(CSOURCES) $(HHEADERS)
+ libcurlu_la_SOURCES = $(CSOURCES) $(HHEADERS)
  
 -libcurl_la_CPPFLAGS_EXTRA =
 -libcurl_la_LDFLAGS_EXTRA =
@@ -77,6 +81,12 @@ diff -Naur curl-7.82.0.old/lib/Makefile.am curl-7.82.0/lib/Makefile.am
  if USE_CPPFLAG_CURL_STATICLIB
 -libcurl_la_CPPFLAGS_EXTRA += -DCURL_STATICLIB
 +libcurl_gnutls_la_CPPFLAGS_EXTRA += -DCURL_STATICLIB
+ else
+ if HAVE_WINDRES
+-libcurl_la_SOURCES += $(LIB_RCFILES)
++libcurl_gnutls_la_SOURCES += $(LIB_RCFILES)
+ $(LIB_RCFILES): $(top_srcdir)/include/curl/curlver.h
+ endif
  endif
  
  if DOING_CURL_SYMBOL_HIDING
@@ -95,19 +105,10 @@ diff -Naur curl-7.82.0.old/lib/Makefile.am curl-7.82.0/lib/Makefile.am
  
  libcurlu_la_CPPFLAGS = $(AM_CPPFLAGS) -DCURL_STATICLIB -DUNITTESTS
  libcurlu_la_LDFLAGS = $(AM_LDFLAGS) -static $(LIBCURL_LIBS)
-@@ -119,7 +119,7 @@
- # Makefile.inc provides the CSOURCES and HHEADERS defines
- include Makefile.inc
- 
--libcurl_la_SOURCES = $(CSOURCES) $(HHEADERS)
-+libcurl_gnutls_la_SOURCES = $(CSOURCES) $(HHEADERS)
- libcurlu_la_SOURCES = $(CSOURCES) $(HHEADERS)
- 
- CHECKSRC = $(CS_$(V))
-diff -Naur curl-7.82.0.old/src/Makefile.am curl-7.82.0/src/Makefile.am
---- curl-7.82.0.old/src/Makefile.am	2022-03-01 18:06:54.000000000 +0100
-+++ curl-7.82.0/src/Makefile.am	2022-03-10 14:27:45.580885491 +0100
-@@ -61,9 +61,9 @@
+diff -Naur curl-7.88.1.old/src/Makefile.am curl-7.88.1/src/Makefile.am
+--- curl-7.88.1.old/src/Makefile.am	2023-03-28 08:29:54.361602970 +0200
++++ curl-7.88.1/src/Makefile.am	2023-03-28 08:30:26.490144807 +0200
+@@ -67,9 +67,9 @@
  LIBS = $(BLANK_AT_MAKETIME)
  
  if USE_EXPLICIT_LIB_DEPS
@@ -119,10 +120,10 @@ diff -Naur curl-7.82.0.old/src/Makefile.am curl-7.82.0/src/Makefile.am
  endif
  
  # if unit tests are enabled, build a static library to link them with
-diff -Naur curl-7.82.0.old/tests/libtest/Makefile.am curl-7.82.0/tests/libtest/Makefile.am
---- curl-7.82.0.old/tests/libtest/Makefile.am	2022-03-01 18:06:54.000000000 +0100
-+++ curl-7.82.0/tests/libtest/Makefile.am	2022-03-10 14:27:45.581885508 +0100
-@@ -47,11 +47,11 @@
+diff -Naur curl-7.88.1.old/tests/libtest/Makefile.am curl-7.88.1/tests/libtest/Makefile.am
+--- curl-7.88.1.old/tests/libtest/Makefile.am	2023-03-28 08:29:54.396603560 +0200
++++ curl-7.88.1/tests/libtest/Makefile.am	2023-03-28 08:30:26.492144840 +0200
+@@ -49,11 +49,11 @@
  LIBS = $(BLANK_AT_MAKETIME)
  
  if USE_EXPLICIT_LIB_DEPS
